@@ -1,6 +1,5 @@
 package com.ranzani.Veterinaria.services;
 
-import com.ranzani.Veterinaria.entities.Pet;
 import com.ranzani.Veterinaria.entities.User;
 import com.ranzani.Veterinaria.entities.dtos.PetDto;
 import com.ranzani.Veterinaria.entities.dtos.UserDto;
@@ -11,8 +10,6 @@ import com.ranzani.Veterinaria.entities.factories.DogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ranzani.Veterinaria.repositories.UserRepository;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
