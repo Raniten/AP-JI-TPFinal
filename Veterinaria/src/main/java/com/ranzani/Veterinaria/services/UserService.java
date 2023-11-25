@@ -8,8 +8,12 @@ import com.ranzani.Veterinaria.entities.enums.DogBreed;
 import com.ranzani.Veterinaria.entities.factories.CatFactory;
 import com.ranzani.Veterinaria.entities.factories.DogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.ranzani.Veterinaria.repositories.UserRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,11 +36,13 @@ public class UserService {
     }
 
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id).get();
+    public ResponseEntity<?> getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(user -> ResponseEntity.ok(user))  // Usuario encontrado
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new User(id, "Usuario no encontrado", "", new ArrayList<>())));
     }
 
-    public User addUser(UserDto requestUser) {
+    public UserDto addUser(UserDto requestUser) {
         User user = new User();
         user.setIdUser(requestUser.getIdUserDto());
         user.setNames(requestUser.getNames());
@@ -51,6 +57,6 @@ public class UserService {
             }
         }
         userRepository.save(user);
-        return user;
+        return new UserDto(user.getIdUser(), user.getNames(), user.getSurName(), requestUser.getPets());
     }
 }

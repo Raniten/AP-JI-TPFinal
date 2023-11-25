@@ -5,23 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name="appointments")
+@Table(name="visits")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Appointment {
+public class Visit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idAppointment;
-    private Long idUser;
-    private Long idPet;
-    private LocalDate date;
+    private Long idVisit;
+    private LocalDateTime visit;
+
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
 }

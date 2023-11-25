@@ -4,9 +4,13 @@ import com.ranzani.Veterinaria.entities.User;
 import com.ranzani.Veterinaria.entities.dtos.UserDto;
 import com.ranzani.Veterinaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,22 +26,20 @@ public class UserController {
 
     //OBTENER la lista de TODOS los usuarios (GET)
     @GetMapping
-    public List<User> getUsers() {
-        return userService.getUsers();
-
+    public ResponseEntity<List<User>> getUsers(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsers());
     }
 
     //OBTENER UN SOLO usuario por su ID (GET)
-    @GetMapping(value="/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(id));
     }
 
     //CREAR UN SOLO usario (POST)
     @PostMapping
-    public User createUser(@RequestBody UserDto newUser) {
-
-        return userService.addUser(newUser);
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto user){
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(user));
     }
 
 

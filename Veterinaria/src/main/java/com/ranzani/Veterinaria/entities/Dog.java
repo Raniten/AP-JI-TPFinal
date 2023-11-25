@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+
 @Entity
 @Getter
 @Setter
@@ -18,7 +20,7 @@ public class Dog extends Pet {
     private DogBreed dogBreed;
 
     public Dog(String name, User user, DogBreed dogBreed) {
-        super(null, name, user);
+        super(null, name, user, new ArrayList<>());
         this.dogBreed = dogBreed;
     }
 
