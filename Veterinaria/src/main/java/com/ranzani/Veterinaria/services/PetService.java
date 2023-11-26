@@ -13,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PetService {
@@ -58,6 +56,10 @@ public class PetService {
             if (requestPet.getPetType().equalsIgnoreCase("CAT")) {
                 CatFactory catFactory = new CatFactory((CatBreed.values()[requestPet.getBreed()-1]));
                 pet = catFactory.createPet(user, requestPet.getName());
+
+            } else if(requestPet.getPetType().equalsIgnoreCase("DOG")) {
+                DogFactory dogFactory = new DogFactory((DogBreed.values()[requestPet.getBreed()-1]));
+                pet = dogFactory.createPet(user, requestPet.getName());
 
             }
             petRepository.save(pet);

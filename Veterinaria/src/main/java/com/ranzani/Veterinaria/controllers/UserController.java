@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -42,5 +39,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(user));
     }
 
+    //ELIMINAR un usuario (DELETE)
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id));
+    }
 
 }

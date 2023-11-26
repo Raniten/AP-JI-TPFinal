@@ -59,4 +59,13 @@ public class UserService {
         userRepository.save(user);
         return new UserDto(user.getIdUser(), user.getNames(), user.getSurName(), requestUser.getPets());
     }
+
+    public String deleteUser(Long id){
+        if (userRepository.existsById(id)){
+            userRepository.deleteById(id);
+            return "El usuario con id: " + id + " ha sido eliminado";
+        } else {
+            return "El usuario con id: " + id + ", no ha sido eliminado";
+        }
+    }
 }
