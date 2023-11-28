@@ -16,17 +16,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idVisit")
-
-
 public class Visit {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVisit;
     private LocalDateTime visit;
-
-
-    //private VisitState<Visit> state;
 
     @ManyToOne
     @JoinColumn(name = "pet_id")
@@ -35,26 +29,4 @@ public class Visit {
     @ManyToOne
     @JoinColumn(name="veterinarian_id")
     private Veterinarian veterinarian;
-
-    /*public Visit(LocalDateTime visit) {
-        this.visit = visit;
-        this.state = new RequestedState();
-    }
-
-    public void requestVisit() {
-        state.requestVisit(this);
-    }
-
-    public void cancelVisit() {
-        state.cancelVisit(this);
-    }
-
-    public void completeVisit() {
-        state.completeVisit(this);
-    }
-
-    public void rescheduleVisit() {
-        state.rescheduleVisit(this);
-    }*/
-
 }
