@@ -38,4 +38,12 @@ public class Visit {
         this.pet = pet;
         this.veterinarian = veterinarian;
     }
+
+    public void changeState(VisitState newState) {
+        if (!VisitState.isAllowedState(state, newState)) {
+            throw new IllegalStateException("Invalid state transition: " + state + " -> " + newState);
+        }
+
+        this.state = newState;
+    }
 }

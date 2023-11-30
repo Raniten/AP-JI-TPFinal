@@ -89,6 +89,50 @@ public class VisitService {
         return ResponseEntity.status(HttpStatus.OK).body("Veterinarian assigned successfully");
     }
 
+    public ResponseEntity<?> changeStateToVisit (Long idVisit, int newState) {
+        Visit visit = new Visit();
+        if( (newState+1) > VisitState.values().length) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid state: " + newState);
+        } else {
+            if(visitRepository.existsById(idVisit)) {
+                visit = visitRepository.findById(idVisit).get();
+                if (!VisitState.isAllowedState(visit.getState(), VisitState.values()[newState])) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid state transition: " + visit.getState() + " -> " + VisitState.values()[newState]);
+                } else {
+                    visit.changeState(VisitState.values()[newState]);
+                    visitRepository.save(visit);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
+
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Visit with id " + idVisit + " not found");
+            }
+        }
+    }
+
+    public ResponseEntity<?> getActiveVisit() {
+        List<VisitState> states = List.of(new VisitState[]{VisitState.NEW, VisitState.RESCHEDULED});
+        List<Visit> activeVisits = visitRepository.findByStateIn(states);
+        if (activeVisits.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(activeVisits);
+        }
+    }
+
+    /*public ResponseEntity<?> getVisitByPetId(Long idPet) {
+
+        if (petRepository.existsById(idPet)) {
+            List<Visit> petVisits = visitRepository.findByPetId(idPet);
+            if (petVisits.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(petVisits);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet with id " + idPet + " not found");
+        }
+    }*/
 
 
 }

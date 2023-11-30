@@ -34,11 +34,25 @@ public class VisitController {
     }
 
 
-    //OBTENER UN SOLO usuario por su ID (GET)
+    //OBTENER UN SOLO turno por su ID (GET)
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getVisitById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(visitService.getVisitById(id));
     }
+
+    //OBTENER la lista de todos los turnos ACTIVOS
+    @GetMapping(value="/active")
+    public ResponseEntity<?> getActiveVisit() {
+        return ResponseEntity.status(HttpStatus.OK).body(visitService.getActiveVisit());
+    }
+
+    /*//OBTENER la lista de todos los turnos de una mascota
+    @GetMapping(value="/pet/{id}")
+    public ResponseEntity<?> getVisitByPetId(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(visitService.getVisitByPetId(id));
+    }*/
+
+
 
     //CREAR UN SOLO turno (POST)
     @PostMapping
@@ -50,5 +64,12 @@ public class VisitController {
     @PutMapping(value = "/{idVisit}/veterinarian/{idVeterinarian}")
     public ResponseEntity<?> assigVetToVisit(@PathVariable Long idVisit, @PathVariable Long idVeterinarian) {
         return ResponseEntity.status(HttpStatus.OK).body(visitService.assignVetToVisit(idVisit, idVeterinarian));
+    }
+
+    //CAMBIAR ESTADO a un turno
+    @PutMapping(value="/{idVisit}/{newState}")
+    public ResponseEntity<?> changeStateToVisit (@PathVariable Long idVisit, @PathVariable int newState) {
+        //return ResponseEntity.status(HttpStatus.OK).body(visitService.changeStateToVisit(idVisit, newState));
+        return visitService.changeStateToVisit(idVisit, newState);
     }
 }

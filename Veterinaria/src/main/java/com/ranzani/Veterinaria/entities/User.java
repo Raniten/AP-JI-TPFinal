@@ -1,6 +1,8 @@
 package com.ranzani.Veterinaria.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ranzani.Veterinaria.entities.factories.PetFactory;
 import jakarta.persistence.CascadeType;
@@ -34,6 +36,7 @@ public class User {
     private String surName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    //@JsonBackReference
     private List<Pet> pets = new ArrayList<>();
 
 

@@ -1,6 +1,8 @@
 package com.ranzani.Veterinaria.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,15 +25,12 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPet;
-
     private String name;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties(value = {"pets"})
     private User user;
-
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Visit> visits;
-
-
 }
