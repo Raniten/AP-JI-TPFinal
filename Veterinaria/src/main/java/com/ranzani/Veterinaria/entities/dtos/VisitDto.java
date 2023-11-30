@@ -14,5 +14,6 @@ public class VisitDto {
     private Long idVisitDto;
     private LocalDateTime visit;
     private Long pet;
+    private String state;
 
 }

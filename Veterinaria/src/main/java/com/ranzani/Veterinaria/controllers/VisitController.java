@@ -43,7 +43,7 @@ public class VisitController {
     //CREAR UN SOLO turno (POST)
     @PostMapping
     public ResponseEntity<VisitDto> addVisit(@RequestBody VisitDto visit){
-        return ResponseEntity.status(HttpStatus.CREATED).body(visitService.addVisit(visit));
+        return visitService.addVisit(visit);
     }
 
     //ASIGNAR un veterinario a una visita programada

@@ -5,6 +5,7 @@ import com.ranzani.Veterinaria.entities.User;
 import com.ranzani.Veterinaria.entities.Veterinarian;
 import com.ranzani.Veterinaria.entities.Visit;
 import com.ranzani.Veterinaria.entities.dtos.VisitDto;
+import com.ranzani.Veterinaria.entities.enums.VisitState;
 import com.ranzani.Veterinaria.repositories.PetRepository;
 import com.ranzani.Veterinaria.repositories.VeterinarianRepository;
 import com.ranzani.Veterinaria.repositories.VisitRepository;
@@ -47,24 +48,22 @@ public class VisitService {
     public ResponseEntity<?> getVisitById(Long id) {
         return visitRepository.findById(id)
                 .map(visit -> ResponseEntity.ok(visit))  // Turno encontrado
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Visit(id, LocalDateTime.now(), /*new RequestedState(), */new Pet(null, "Turno no encontrado", new User(), new ArrayList<>()), new Veterinarian())));
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Visit(id, LocalDateTime.now(), new Pet(null, "Turno no encontrado", new User(), new ArrayList<>()), new Veterinarian())));
     }
 
-    public VisitDto addVisit(VisitDto requestVisit) {
+    public ResponseEntity<VisitDto> addVisit(VisitDto requestVisit) {
         Visit visit = new Visit();
 
         if (petRepository.existsById(requestVisit.getPet())) {
             Pet pet = petRepository.findById(requestVisit.getPet()).get();
             visit.setPet(pet);
             visit.setVisit(requestVisit.getVisit());
-
+            visit.setState(VisitState.NEW);
+            visitRepository.save(visit);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new VisitDto(visit.getIdVisit(), visit.getVisit(), visit.getPet().getIdPet(), visit.getState().toString()));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new VisitDto());
         }
-        visit.setIdVisit(requestVisit.getIdVisitDto());
-        visit.setVisit(requestVisit.getVisit());
-        visit.setPet(petRepository.findById(requestVisit.getPet()).get());
-
-        visitRepository.save(visit);
-        return new VisitDto(visit.getIdVisit(), visit.getVisit(), visit.getPet().getIdPet());
     }
 
     public List<Visit> getVisitsUnassigned() {

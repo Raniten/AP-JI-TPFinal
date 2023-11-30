@@ -2,6 +2,7 @@ package com.ranzani.Veterinaria.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.ranzani.Veterinaria.entities.enums.VisitState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class Visit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVisit;
     private LocalDateTime visit;
+    private VisitState state;
 
     @ManyToOne
     @JoinColumn(name = "pet_id")
@@ -29,4 +31,11 @@ public class Visit {
     @ManyToOne
     @JoinColumn(name="veterinarian_id")
     private Veterinarian veterinarian;
+
+    public Visit (Long idVisit, LocalDateTime visit, Pet pet, Veterinarian veterinarian) {
+        this.idVisit = idVisit;
+        this.visit = visit;
+        this.pet = pet;
+        this.veterinarian = veterinarian;
+    }
 }
